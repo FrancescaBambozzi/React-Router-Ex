@@ -1,25 +1,12 @@
 import React, { Component } from 'react'
-import axios from 'axios' //to fetch dummy data 
 import { Link } from 'react-router-dom'
 import Pokeball from '../pokeball.png'
+import { connect } from 'react-redux'; //higher-order comp (function)that connect the component to the redux store
 
 class Home extends Component {
-    state = {
-        posts: [] //it's empty 'cause we don't have data yet
-    }
-    componentDidMount() {
-        axios.get('https://jsonplaceholder.typicode.com/posts')
-            //once the data request has completed, we use the .then() method to make an action
-            .then(res => { //then, 'res' -> respond to data request
-                console.log(res)
-                //we want to grab some data and push them inside the state's array
-                this.setState({
-                    posts: res.data.slice(0, 10) //to get only the firsts 10 posts
-                })
-            })
-    }
     render() {
-        const { posts } = this.state;
+        console.log(this.props)
+        const { posts } = this.props; //get the data from the props
         const postList = posts.length ? (
             posts.map(post => {
                 return (
@@ -45,4 +32,10 @@ class Home extends Component {
         )
     }
 }
-export default Home;
+
+const mapStateToProps = (state) => { //the parameter is the state of the redux central store
+    return {
+        posts: state.posts //we want to import these data from the central store
+    }
+}
+export default connect(mapStateToProps)(Home); //invoking the function and 
